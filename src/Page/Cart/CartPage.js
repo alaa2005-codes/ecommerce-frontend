@@ -7,7 +7,7 @@ const CartPage = () => {
     return (
         <Container style={{ minHeight: '670px' }}>
             <Row>
-                <div className='cart-title mt-4'>عربة التسوق</div>
+                <div className='cart-title mt-4'>سلة التسوق</div>
             </Row>
             <Row className='d-flex justify-content-center'>
                 <Col xs="12" md="9">

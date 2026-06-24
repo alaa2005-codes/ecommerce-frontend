@@ -1,5 +1,5 @@
 import axios from 'axios'
 
-const baseUrl = axios.create({ baseURL: "https://alaaahmd-m5hk0361.b4a.run/api/v1" })
+const baseUrl = axios.create({ baseURL: "https://nodejs-ecommerce-api-v1-production-a56b.up.railway.app/api/v1" })
 
 export default baseUrl

@@ -55,8 +55,8 @@ const ProductText = () => {
       </Row>
       <Row className="mt-4">
         <Col md="12">
-          <div className="product-price d-inline px-3 py-3 border">{item.price} جنية</div>
-          <div className="product-cart-add px-3 py-3 d-inline mx-3">اضف للعربة</div>
+          <div className="product-price d-inline px-3 py-3 border">{item.price} ليرة سورية</div>
+          <div className="product-cart-add px-3 py-3 d-inline mx-3">اضف للسلة</div>
         </Col>
       </Row>
     </div>

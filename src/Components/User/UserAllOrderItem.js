@@ -19,7 +19,7 @@ const UserAllOrderItem = () => {
                 </Col>
                 <Col xs="6" className="d-flex justify-content-end">
                     <div>
-                        <div className="barnd-text">4000 جنيه</div>
+                        <div className="barnd-text">4000 ليرة سورية</div>
                     </div>
                 </Col>
             </Row>

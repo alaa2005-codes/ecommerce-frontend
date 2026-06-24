@@ -69,7 +69,7 @@ const NavBarLogin = () => {
                             className="nav-text d-flex mt-3 justify-content-center"
                             style={{ color: "white" }}>
                             <img src={cart} className="login-img" alt="sfvs" />
-                            <p style={{ color: "white" }}>العربه</p>
+                            <p style={{ color: "white" }}>السله</p>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

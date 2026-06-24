@@ -61,7 +61,7 @@ const ProductCard = ({ item, favProd }) => {
                             </div>
                             <div className="d-flex">
                                 <div className="card-price">{item.price}</div>
-                                <div className="card-currency mx-1">جنيه</div>
+                                <div className="card-currency mx-1">ليرة سورية</div>
                             </div>
                         </div>
                     </Card.Text>

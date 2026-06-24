@@ -66,7 +66,7 @@ const AdminAllProductsCard = ({ item }) => {
                             <div className="d-flex justify-content-between">
                                 <div className="card-rate">{item.ratingsQuantity}</div>
                                 <div className="d-flex">
-                                    <div className="card-currency mx-1">جنيه</div>
+                                    <div className="card-currency mx-1">ليرة سورية</div>
                                     <div className="card-price">{item.price}</div>
                                 </div>
                             </div>

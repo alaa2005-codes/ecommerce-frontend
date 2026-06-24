@@ -76,7 +76,7 @@ const AdminOrderDetalis = () => {
                     </div>
                 </Col>
                 <div className=" d-inline px-4 border text-center pt-2">
-                    المجموع ٤٠٠٠ جنيه
+                    المجموع ٤٠٠٠ ليرة سورية
                 </div>
                 <div className="d-flex mt-2 justify-content-center">
                     <select

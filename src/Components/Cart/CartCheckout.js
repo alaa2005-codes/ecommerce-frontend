@@ -13,7 +13,7 @@ const CartCheckout = () => {
                     />
                     <button className="copon-btn d-inline ">تطبيق</button>
                 </div>
-                <div className="product-price d-inline w-100 my-3  border">34000 جنية</div>
+                <div className="product-price d-inline w-100 my-3  border">34000 ليرة سورية</div>
                 <Link
                     to="/order/paymethoud"
                     style={{ textDecoration: "none" }}
