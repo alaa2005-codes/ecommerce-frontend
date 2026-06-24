@@ -27,17 +27,22 @@ export const createNewUser = (data) => async (dispatch) => {
 export const loginUser = (data) => async (dispatch) => {
     try {
         const response = await useInsertData(`/api/v1/auth/login`, data);
+
         dispatch({
             type: LOGIN_USER,
             payload: response,
-            loading: true
-        })
+        });
+
+        return response;
 
     } catch (e) {
+
         dispatch({
             type: LOGIN_USER,
             payload: e.response,
-        })
+        });
+
+        return e.response;
     }
 }
 
