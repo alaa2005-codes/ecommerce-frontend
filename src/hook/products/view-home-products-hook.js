@@ -6,19 +6,18 @@ const ViewHomeProductsHook = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getAllProducts())
+        dispatch(getAllProducts(8)) // أضفت الرقم 8
     }, [])
 
-    const allProducts = useSelector((state) => state.allproducts.allProducts)
+    const allProducts = useSelector((state) => state.productsReducer.allProducts) // غيرت المسار
 
     let items = [];
-if (allProducts && allProducts.data)
+    if (allProducts && allProducts.data)
         items = allProducts.data.slice(0, 4);
     else
         items = []
 
     return [items]
-
 }
 
 export default ViewHomeProductsHook
