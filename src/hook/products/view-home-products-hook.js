@@ -6,15 +6,14 @@ const ViewHomeProductsHook = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getAllProducts(8)); // ✅ أضفت الرقم 8
-    }, [dispatch]); // ✅ أضفت dispatch كـ dependency
+        dispatch(getAllProducts(8));
+    }, [dispatch]);
 
-    // ✅ التعديل الأساسي: غيرت المسار إلى productsReducer
-    const allProducts = useSelector((state) => state.productsReducer?.allProducts);
+    const allProducts = useSelector((state) => state.allproducts?.allProducts);
 
     let items = [];
-    if (allProducts && allProducts.data) {
-        items = allProducts.data; // ✅ عرض كل البيانات (بدون slice)
+    if (allProducts && allProducts.data && Array.isArray(allProducts.data)) {
+        items = allProducts.data;
     }
 
     return [items];

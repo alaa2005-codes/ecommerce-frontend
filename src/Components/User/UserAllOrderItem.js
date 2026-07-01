@@ -1,25 +1,32 @@
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
-import mobile from '../../images/mobile.png'
 import UserAllOrderCard from './UserAllOrderCard'
-const UserAllOrderItem = () => {
+
+const UserAllOrderItem = ({ order }) => {
     return (
         <div className="user-order mt-2">
             <Row>
-                <div className="py-2 order-title">طلب رقم #234556</div>
+                <div className="py-2 order-title">
+                    طلب رقم #{order.orderNumber || order._id}
+                </div>
             </Row>
-            <UserAllOrderCard />
-            <UserAllOrderCard />
+            {order.products && order.products.map((item, index) => (
+                <UserAllOrderCard key={index} item={item} />
+            ))}
             <Row className="d-flex justify-content-between">
                 <Col xs="6" className="">
                     <div>
                         <div className="d-inline">الحالة</div>
-                        <div className="d-inline mx-2 stat">قيد التنفيذ</div>
+                        <div className="d-inline mx-2 stat">
+                            {order.status || 'قيد التنفيذ'}
+                        </div>
                     </div>
                 </Col>
                 <Col xs="6" className="d-flex justify-content-end">
                     <div>
-                        <div className="barnd-text">4000 ليرة سورية</div>
+                        <div className="barnd-text">
+                            {order.totalPrice || 0} ليرة سورية
+                        </div>
                     </div>
                 </Col>
             </Row>

@@ -1,35 +1,36 @@
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductWishList } from './../../redux/actions/wishListAction';
+import { getProductWishList } from '../../redux/actions/wishListAction';
 
 const CardContainerHook = () => {
-    const dispatch = useDispatch()
-    const [loading, setLoading] = useState(true)
-    const [favProd, setFavProd] = useState([])
-    const res = useSelector(state => state.addToWishListReducer.allWishList)
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(true);
+    const [favProducts, setFavProducts] = useState([]);
+
+    const products = useSelector((state) => state.allproducts?.allProducts?.data || []);
 
     useEffect(() => {
-        const get = async () => {
-            setLoading(true)
-            await dispatch(getProductWishList())
-            setLoading(false)
-        }
-        get();
-    }, [])
-
-    useEffect(() => {
-        if (loading === false && res && res.data) {
-            if (res.data.length >= 1) {
-                setFavProd(res.data.map(item => item._id))
-            } else {
-                setFavProd([])
+        const fetchFavorites = async () => {
+            try {
+                await dispatch(getProductWishList());
+            } catch (error) {
+                console.error('Error fetching wishlist:', error);
+            } finally {
+                setLoading(false);
             }
-        } else if (loading === false) {
-            setFavProd([])
+        };
+        fetchFavorites();
+    }, [dispatch]);
+
+    const wishlist = useSelector((state) => state.addToWishListReducer?.wishlist || []);
+
+    useEffect(() => {
+        if (wishlist && wishlist.length > 0) {
+            setFavProducts(wishlist.map(item => item._id));
         }
-    }, [loading, res])
+    }, [wishlist]);
 
-    return [favProd]
-}
+    return [products, favProducts, loading];
+};
 
-export default CardContainerHook
+export default CardContainerHook;

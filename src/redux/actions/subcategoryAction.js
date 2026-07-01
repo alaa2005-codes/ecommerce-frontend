@@ -2,7 +2,7 @@ import { CREATE_SUB_CATEGORY, GET_SUB_CATEGORY, GET_ERROR } from '../type'
 import { useGetData } from '../../hooks/useGetData'
 import { useInsertData } from '../../hooks/useInsertData'
 
-//create sub category with pagination
+//create sub category 
 export const createSubCategory = (data) => async (dispatch) => {
     try {
         const response = await useInsertData("/subcategories", data);

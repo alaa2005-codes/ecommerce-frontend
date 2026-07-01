@@ -3,12 +3,13 @@ import { DELETE_PRODUCTS, UPDATE_PRODUCTS, CREATE_PRODUCTS, GET_PRODUCT_LIKE, GE
 const inital = {
     products: [],
     allProducts: [],
-    oneProduct: [],
+    oneProduct: {},
     productLike: [],
     deleteProducts: [],
     updateProducts: [],
     loading: true,
 }
+
 const productsReducer = (state = inital, action) => {
     switch (action.type) {
         case CREATE_PRODUCTS:
@@ -25,6 +26,7 @@ const productsReducer = (state = inital, action) => {
             }
         case GET_PRODUCT_DETALIS:
             return {
+                ...state,  // ✅ أضف هذا السطر
                 oneProduct: action.payload,
                 loading: false,
             }
@@ -48,6 +50,7 @@ const productsReducer = (state = inital, action) => {
             }
         case GET_ERROR:
             return {
+                ...state,
                 loading: true,
                 products: action.payload,
             }
@@ -55,4 +58,5 @@ const productsReducer = (state = inital, action) => {
             return state;
     }
 }
+
 export default productsReducer

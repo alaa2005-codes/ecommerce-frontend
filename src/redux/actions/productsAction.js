@@ -89,7 +89,7 @@ export const getOneProduct = (id) => async (dispatch) => {
     }
 }
 
-//get one product with id
+//get products with category id
 export const getProductLike = (id) => async (dispatch) => {
     try {
         const response = await useGetData(`/products?category=${id}`);
@@ -106,7 +106,7 @@ export const getProductLike = (id) => async (dispatch) => {
     }
 }
 
-//delete prooduct with id
+//delete product with id
 export const deleteProducts = (id) => async (dispatch) => {
     try {
         const response = await useDeleteData(`/products/${id}`);
@@ -123,7 +123,7 @@ export const deleteProducts = (id) => async (dispatch) => {
     }
 }
 
-//update prooduct with id
+//update product with id
 export const updateProducts = (id, data) => async (dispatch) => {
     try {
         const response = await useInUpdateDataWithImage(`/products/${id}`, data);

@@ -1,10 +1,9 @@
-import { CREATE_NEW_USER, RESET_PASSWORD, VERIFY_PASSWORD, FOREGT_PASSWORD, GET_CURERNT_USER, LOGIN_USER } from '../type';
-import { useInsertData } from '../../hooks/useInsertData';
+import { CREATE_NEW_USER, RESET_PASSWORD, VERIFY_PASSWORD, FOREGT_PASSWORD, GET_CURERNT_USER, LOGIN_USER } from '../type'
+import { useInsertData } from '../../hooks/useInsertData'
 import { useGetData, useGetDataToken } from './../../hooks/useGetData';
 import { useInsUpdateData } from '../../hooks/useUpdateData';
-import baseUrl from '../../Api/baseURL';
 
-// create new user 
+//create new user 
 export const createNewUser = (data) => async (dispatch) => {
     try {
         const response = await useInsertData(`/auth/signup`, data);
@@ -12,16 +11,16 @@ export const createNewUser = (data) => async (dispatch) => {
             type: CREATE_NEW_USER,
             payload: response,
             loading: true
-        });
+        })
     } catch (e) {
         dispatch({
             type: CREATE_NEW_USER,
             payload: e.response,
-        });
+        })
     }
-};
+}
 
-// login user
+//login user 
 export const loginUser = (data) => async (dispatch) => {
     try {
         const response = await useInsertData(`/auth/login`, data);
@@ -29,16 +28,16 @@ export const loginUser = (data) => async (dispatch) => {
             type: LOGIN_USER,
             payload: response,
             loading: true
-        });
+        })
     } catch (e) {
         dispatch({
             type: LOGIN_USER,
             payload: e.response,
-        });
+        })
     }
-};
+}
 
-// get logged user
+//get logged user 
 export const getLoggedUser = () => async (dispatch) => {
     try {
         const response = await useGetDataToken(`/users/getMe`);
@@ -46,16 +45,16 @@ export const getLoggedUser = () => async (dispatch) => {
             type: GET_CURERNT_USER,
             payload: response,
             loading: true
-        });
+        })
     } catch (e) {
         dispatch({
             type: GET_CURERNT_USER,
             payload: e.response,
-        });
+        })
     }
-};
+}
 
-// forget password
+//forget password 
 export const forgetPassword = (data) => async (dispatch) => {
     try {
         const response = await useInsertData(`/auth/forgotPasswords`, data);
@@ -63,16 +62,16 @@ export const forgetPassword = (data) => async (dispatch) => {
             type: FOREGT_PASSWORD,
             payload: response,
             loading: true
-        });
+        })
     } catch (e) {
         dispatch({
             type: FOREGT_PASSWORD,
             payload: e.response,
-        });
+        })
     }
-};
+}
 
-// verify password
+//verify password 
 export const verifyPassword = (data) => async (dispatch) => {
     try {
         const response = await useInsertData(`/auth/verifyResetCode`, data);
@@ -80,16 +79,16 @@ export const verifyPassword = (data) => async (dispatch) => {
             type: VERIFY_PASSWORD,
             payload: response,
             loading: true
-        });
+        })
     } catch (e) {
         dispatch({
             type: VERIFY_PASSWORD,
             payload: e.response,
-        });
+        })
     }
-};
+}
 
-// reset password
+//reset password 
 export const resetPassword = (data) => async (dispatch) => {
     try {
         const response = await useInsUpdateData(`/auth/resetPassword`, data);
@@ -97,11 +96,11 @@ export const resetPassword = (data) => async (dispatch) => {
             type: RESET_PASSWORD,
             payload: response,
             loading: true
-        });
+        })
     } catch (e) {
         dispatch({
             type: RESET_PASSWORD,
             payload: e.response,
-        });
+        })
     }
-};
+}
