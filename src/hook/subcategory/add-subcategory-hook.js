@@ -12,7 +12,7 @@ const addSubcategoryhook = () => {
             notify("هناك مشكله فى الاتصال بالانترنت", "warn")
             return;
         }
-        dispatch(getAllCategory());
+        dispatch(getAllCategory(50));
     }, [])
     const [id, setID] = useState('0')
     const [name, setName] = useState('')

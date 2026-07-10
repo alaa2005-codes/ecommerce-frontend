@@ -3,6 +3,10 @@ import { Col, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const AdminAllOrdersItem = ({ order }) => {
+    if (!order) {
+        return null;
+    }
+
     return (
         <Col sm="12">
             <Link
@@ -15,6 +19,7 @@ const AdminAllOrdersItem = ({ order }) => {
                     height="197px" 
                     src={order.product?.imageCover || '/images/mobile.png'}
                     alt={order.product?.title} 
+                    onError={(e) => { e.target.src = '/images/mobile.png' }}
                 />
                 <div className="w-100">
                     <Row className="justify-content-between">

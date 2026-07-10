@@ -18,6 +18,7 @@ const CartItem = ({ item }) => {
                 height="197px" 
                 src={item.imageCover || '/images/mobile.png'} 
                 alt={item.title} 
+                onError={(e) => { e.target.src = '/images/mobile.png' }}
             />
             <div className="w-100">
                 <Row className="justify-content-between">

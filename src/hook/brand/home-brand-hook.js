@@ -7,7 +7,7 @@ const HomeBrandHook = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getAllBrand());
+        dispatch(getAllBrand(4));
     }, [])
     //get last brand state from redux
     const brand = useSelector(state => state.allBrand.brand)

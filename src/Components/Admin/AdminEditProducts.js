@@ -9,12 +9,18 @@ import MultiImageInput from 'react-multiple-image-input';
 import { CompactPicker } from 'react-color'
 import { ToastContainer } from 'react-toastify';
 import AdminEditProductsHook from './../../hook/products/edit-products-hook';
+import { normalizeListData } from '../../utils/normalizeData';
 
 const AdminEditProducts = () => {
     const { id } = useParams();
 
     const [CatID, BrandID, onChangeDesName, onChangeQty, onChangeColor, onChangePriceAfter, onChangePriceBefor, onChangeProdName, showColor, category, brand, priceAftr, images, setImages, onSelect, onRemove, options, handelChangeComplete, removeColor, onSeletCategory, handelSubmit, onSeletBrand, colors, priceBefore, qty, prodDescription, prodName] =
         AdminEditProductsHook(id);
+
+    const categoryOptions = normalizeListData(category);
+    const brandOptions = normalizeListData(brand);
+    const safeColors = Array.isArray(colors) ? colors : [];
+    const safeOptions = Array.isArray(options) ? options : [];
 
     return (
         <div>
@@ -75,19 +81,18 @@ const AdminEditProducts = () => {
                         className="select input-form-area mt-3 px-2 ">
                         <option value="0">التصنيف الرئيسي</option>
                         {
-                            category.data ? (category.data.map((item) => {
+                            categoryOptions.map((item, index) => {
                                 return (
-                                    <option value={item._id}>{item.name}</option>
+                                    <option key={`${item._id || index}`} value={item._id}>{item.name}</option>
                                 )
-                            })) : null
-
+                            })
                         }
                     </select>
 
                     <Multiselect
                         className="mt-2 text-end"
                         placeholder="التصنيف الفرعي"
-                        options={options}
+                        options={safeOptions}
                         onSelect={onSelect}
                         onRemove={onRemove}
                         displayValue="name"
@@ -100,19 +105,18 @@ const AdminEditProducts = () => {
                         className="select input-form-area mt-3 px-2 ">
                         <option value="0">اختر ماركة</option>
                         {
-                            brand.data ? (brand.data.map((item) => {
+                            brandOptions.map((item, index) => {
                                 return (
-                                    <option value={item._id}>{item.name}</option>
+                                    <option key={`${item._id || index}`} value={item._id}>{item.name}</option>
                                 )
-                            })) : null
-
+                            })
                         }
                     </select>
                     <div className="text-form mt-3 "> الالوان المتاحه للمنتج</div>
                     <div className="mt-1 d-flex">
                         {
-                            colors.length >= 1 ? (
-                                colors.map((color, index) => {
+                            safeColors.length >= 1 ? (
+                                safeColors.map((color, index) => {
                                     return (
                                         <div key={index}
                                             onClick={() => removeColor(color)}

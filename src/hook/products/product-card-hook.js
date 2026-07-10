@@ -8,15 +8,15 @@ import favon from "../../images/fav-on.png";
 const ProductCardHook = (item, favProd) => {
     const dispatch = useDispatch();
     const [favImg, setFavImg] = useState(favoff)
-    let Fav = favProd.some(fitem => fitem === item._id);
+    const favIds = Array.isArray(favProd) ? favProd : [];
     const [loadingAdd, setLoadingAdd] = useState(true)
     const [loadingRemove, setLoadingRemove] = useState(true)
-    const [isFav, setIsFav] = useState(Fav)
+    const [isFav, setIsFav] = useState(favIds.includes(item?._id))
 
 
     useEffect(() => {
-        setIsFav(favProd.some(fitem => fitem === item._id))
-    }, [favProd])
+        setIsFav(favIds.includes(item?._id))
+    }, [favIds, item?._id])
 
     const handelFav = () => {
         if (isFav) {
@@ -37,8 +37,8 @@ const ProductCardHook = (item, favProd) => {
 
     }, [isFav])
 
-    const resAdd = useSelector(state => state.addToWishListReducer.addWishList)
-    const resRemove = useSelector(state => state.addToWishListReducer.removeWishList)
+    const resAdd = useSelector(state => state.addToWishListReducer?.addWishList)
+    const resRemove = useSelector(state => state.addToWishListReducer?.removeWishList)
 
     const addToWishListData = async () => {
         setIsFav(true)
@@ -65,28 +65,23 @@ const ProductCardHook = (item, favProd) => {
 
     useEffect(() => {
         if (loadingAdd === false) {
-            console.log(resAdd)
-            if (resAdd && resAdd.status === 200) {
+            if (resAdd && (resAdd.status === 200 || resAdd.status === 201)) {
                 notify("تمت اضافة المنتج للمفضلة بنجاح", "success")
             } else if (resAdd && resAdd.status === 401) {
                 notify("انتا غير مسجل", "error")
             }
         }
-    }, [loadingAdd])
+    }, [loadingAdd, resAdd])
 
     useEffect(() => {
-
-
         if (loadingRemove === false) {
-            console.log(resRemove)
-            if (resRemove && resRemove.status === "success") {
+            if (resRemove && (resRemove.status === "success" || resRemove.status === 200)) {
                 notify("تمت حذف المنتج من المفضلة بنجاح", "warn")
-            } else if (resAdd && resAdd.status === 401) {
+            } else if (resRemove && resRemove.status === 401) {
                 notify("انتا غير مسجل", "error")
             }
-
         }
-    }, [loadingRemove])
+    }, [loadingRemove, resRemove])
 
 
     return [removeToWishListData, addToWishListData, handelFav, favImg]

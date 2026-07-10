@@ -11,13 +11,12 @@ export const createProduct = (formatData) => async (dispatch) => {
         dispatch({
             type: CREATE_PRODUCTS,
             payload: response,
-            loading: true
-        })
+        });
     } catch (e) {
         dispatch({
             type: GET_ERROR,
             payload: "Error  " + e,
-        })
+        });
     }
 }
 

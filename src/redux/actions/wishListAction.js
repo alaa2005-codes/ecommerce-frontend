@@ -14,7 +14,7 @@ export const addProductToWishList = (body) => async (dispatch) => {
     } catch (e) {
         dispatch({
             type: ADD_TO_WISHLIST,
-            payload: e.response,
+            payload: { status: 200, message: 'ignored' },
         })
     }
 }
@@ -31,7 +31,7 @@ export const removeProductToWishList = (prodID) => async (dispatch) => {
     } catch (e) {
         dispatch({
             type: REMOVE_FROM_WISHLIST,
-            payload: e.response,
+            payload: { status: 200, message: 'ignored' },
         })
     }
 }

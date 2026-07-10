@@ -15,16 +15,19 @@ const categoryReducer = (state = inital, action) => {
             }
         case GET_ONE_CATEGORY:
             return {
+                ...state,
                 oneCategory: action.payload,
                 loading: false,
             }
         case CREATE_CATEGORY:
             return {
+                ...state,
                 category: action.payload,
                 loading: false
             }
         case GET_ERROR:
             return {
+                ...state,
                 loading: true,
                 category: action.payload,
             }

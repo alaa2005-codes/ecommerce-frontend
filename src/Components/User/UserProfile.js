@@ -1,66 +1,49 @@
-import React from 'react'
-import { Row, Col } from 'react-bootstrap'
-import deleteicon from '../../images/delete.png'
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { getLoggedUser } from '../../redux/actions/authAction';
+
 const UserProfile = () => {
-    return (
-        <div>
-            <div className="admin-content-text">الصفحه الشخصية</div>
-            <div className="user-address-card my-3 px-2">
-                <Row className="d-flex justify-content-between pt-2">
-                    <Col xs="6" className="d-flex">
-                        <div className="p-2">الاسم:</div>
-                        <div className="p-1 item-delete-edit">احمد عبداللة</div>
-                    </Col>
-                    <Col xs="6" className="d-flex justify-content-end">
-                        <div className="d-flex mx-2">
-                            <img
-                                alt=""
-                                className="ms-1 mt-2"
-                                src={deleteicon}
-                                height="17px"
-                                width="15px"
-                            />
-                            <p className="item-delete-edit"> تعديل</p>
-                        </div>
-                    </Col>
-                </Row>
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
+  const currentUser = auth?.currentUser || {};
+  const user = currentUser?.data || {};
 
-                <Row className="">
-                    <Col xs="12" className="d-flex">
-                        <div className="p-2">رقم الهاتف:</div>
-                        <div className="p-1 item-delete-edit">0122314324</div>
-                    </Col>
-                </Row>
-                <Row className="">
-                    <Col xs="12" className="d-flex">
-                        <div className="p-2">الايميل:</div>
-                        <div className="p-1 item-delete-edit">ahmed@gmail.com</div>
-                    </Col>
-                </Row>
-                <Row className="mt-5">
-                    <Col xs="10" sm="8" md="6" className="">
-                        <div className="admin-content-text">تغير كملة المرور</div>
-                        <input
-                            type="password"
-                            className="input-form d-block mt-1 px-3"
-                            placeholder="ادخل كلمة المرور القديمة"
-                        />
-                        <input
-                            type="password"
-                            className="input-form d-block mt-3 px-3"
-                            placeholder="ادخل كلمة المرور الجديده"
-                        />
-                    </Col>
-                </Row>
+  useEffect(() => {
+    dispatch(getLoggedUser());
+  }, [dispatch]);
 
-                <Row>
-                    <Col xs="10" sm="8" md="6" className="d-flex justify-content-end ">
-                        <button className="btn-save d-inline mt-2 ">حفظ كلمة السر</button>
-                    </Col>
-                </Row>
-            </div>
+  return (
+    <div className="user-profile">
+      <div className="profile-header">
+        <h2>الملف الشخصي</h2>
+      </div>
+      <div className="profile-content">
+        <div className="profile-info">
+          <div className="info-item">
+            <span className="label">الاسم:</span>
+            <span className="value">{user?.name || 'غير محدد'}</span>
+          </div>
+          <div className="info-item">
+            <span className="label">البريد الإلكتروني:</span>
+            <span className="value">{user?.email || 'غير محدد'}</span>
+          </div>
+          <div className="info-item">
+            <span className="label">رقم الهاتف:</span>
+            <span className="value">{user?.phone || 'غير محدد'}</span>
+          </div>
         </div>
-    )
-}
+        <div className="profile-actions">
+          <Link to="/edit-profile" className="btn btn-primary">
+            تعديل الملف الشخصي
+          </Link>
+          <Link to="/my-orders" className="btn btn-secondary">
+            طلباتي
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-export default UserProfile
+export default UserProfile;

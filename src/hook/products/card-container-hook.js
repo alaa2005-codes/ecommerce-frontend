@@ -22,11 +22,13 @@ const CardContainerHook = () => {
         fetchFavorites();
     }, [dispatch]);
 
-    const wishlist = useSelector((state) => state.addToWishListReducer?.wishlist || []);
+    const wishlist = useSelector((state) => state.addToWishListReducer?.allWishList);
 
     useEffect(() => {
-        if (wishlist && wishlist.length > 0) {
-            setFavProducts(wishlist.map(item => item._id));
+        if (Array.isArray(wishlist?.data)) {
+            setFavProducts(wishlist.data.map(item => item?._id).filter(Boolean));
+        } else {
+            setFavProducts([]);
         }
     }, [wishlist]);
 

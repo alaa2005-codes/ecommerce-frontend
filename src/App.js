@@ -17,6 +17,7 @@ import AdminAddBrandPage from "./Page/Admin/AdminAddBrandPage";
 import AdminAddCategoryPage from "./Page/Admin/AdminAddCategoryPage";
 import AdminAddSubCategoryPage from "./Page/Admin/AdminAddSubCategoryPage";
 import AdminAddProductsPage from "./Page/Admin/AdminAddProductsPage";
+import AdminUsersPage from './Components/Admin/AdminUsersPage';
 import UserAllOrdersPage from "./Page/User/UserAllOrdersPage";
 import UserFavoriteProductsPage from "./Page/User/UserFavoriteProductsPage";
 import UserAllAddresPage from './Page/User/UserAllAddresPage';
@@ -27,12 +28,13 @@ import AdminEditProductsPage from './Page/Admin/AdminEditProductsPage';
 import ForgetPasswordPage from "./Page/Auth/ForgetPasswordPage";
 import VerifyPasswordPage from "./Page/Auth/VerifyPasswordPage";
 import RsetPasswordPage from "./Page/Auth/ResetPasswordPage";
+import ProtectedRoute from './Components/Uitily/ProtectedRoute';
 
 function App() {
   return (
     <div className="font" >
-      <NavBarLogin />
       <BrowserRouter>
+        <NavBarLogin />
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -41,22 +43,23 @@ function App() {
           <Route path="/allbrand" element={<AllBrandPage />} />
           <Route path="/products" element={<ShopProductsPage />} />
           <Route path="/products/:id" element={<ProductDetalisPage />} />
-          <Route path="/cart" element={<CartPage />} />
-          <Route path="/order/paymethoud" element={<ChoosePayMethoudPage />} />
-          <Route path="/admin/allproducts" element={<AdminAllProductsPage />} />
-          <Route path="/admin/allorders" element={<AdminAllOrdersPage />} />
-          <Route path="/admin/orders/:id" element={<AdminOrderDetalisPage />} />
-          <Route path="/admin/addbrand" element={<AdminAddBrandPage />} />
-          <Route path="/admin/addcategory" element={<AdminAddCategoryPage />} />
-          <Route path="/admin/addsubcategory" element={<AdminAddSubCategoryPage />} />
-          <Route path="/admin/addproduct" element={<AdminAddProductsPage />} />
-          <Route path="/user/allorders" element={<UserAllOrdersPage />} />
-          <Route path="/user/favoriteproducts" element={<UserFavoriteProductsPage />} />
-          <Route path="/user/addresses" element={<UserAllAddresPage />} />
-          <Route path="/user/add-address" element={<UserAddAddressPage />} />
-          <Route path="/user/edit-address" element={<UserEditAddressPage />} />
-          <Route path="/user/profile" element={<UserProfilePage />} />
-          <Route path="/admin/editproduct/:id" element={<AdminEditProductsPage />} />
+          <Route path="/cart" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><CartPage /></ProtectedRoute>} />
+          <Route path="/order/paymethoud" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><ChoosePayMethoudPage /></ProtectedRoute>} />
+          <Route path="/admin/allproducts" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAllProductsPage /></ProtectedRoute>} />
+          <Route path="/admin/allorders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAllOrdersPage /></ProtectedRoute>} />
+          <Route path="/admin/orders/:id" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminOrderDetalisPage /></ProtectedRoute>} />
+          <Route path="/admin/addbrand" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddBrandPage /></ProtectedRoute>} />
+          <Route path="/admin/addcategory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddCategoryPage /></ProtectedRoute>} />
+          <Route path="/admin/addsubcategory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddSubCategoryPage /></ProtectedRoute>} />
+          <Route path="/admin/addproduct" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddProductsPage /></ProtectedRoute>} />
+          <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin']}><AdminUsersPage /></ProtectedRoute>} />
+          <Route path="/user/allorders" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserAllOrdersPage /></ProtectedRoute>} />
+          <Route path="/user/favoriteproducts" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserFavoriteProductsPage /></ProtectedRoute>} />
+          <Route path="/user/addresses" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserAllAddresPage /></ProtectedRoute>} />
+          <Route path="/user/add-address" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserAddAddressPage /></ProtectedRoute>} />
+          <Route path="/user/edit-address" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserEditAddressPage /></ProtectedRoute>} />
+          <Route path="/user/profile" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserProfilePage /></ProtectedRoute>} />
+          <Route path="/admin/editproduct/:id" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminEditProductsPage /></ProtectedRoute>} />
           <Route path="/user/forget-password" element={<ForgetPasswordPage />} />
           <Route path="/user/verify-code" element={<VerifyPasswordPage />} />
           <Route path="/user/reset-password" element={<RsetPasswordPage />} />

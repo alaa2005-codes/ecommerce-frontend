@@ -15,16 +15,19 @@ const brandReducer = (state = inital, action) => {
             }
         case GET_ONE_BRAND:
             return {
+                ...state,
                 oneBrand: action.payload,
                 loading: false,
             }
         case CREATE_BRAND:
             return {
+                ...state,
                 brand: action.payload,
                 loading: false
             }
         case GET_ERROR:
             return {
+                ...state,
                 loading: true,
                 brand: action.payload,
             }

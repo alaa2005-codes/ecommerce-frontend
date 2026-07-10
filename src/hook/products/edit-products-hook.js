@@ -14,8 +14,8 @@ const AdminEditProductsHook = (id) => {
     useEffect(() => {
         const run = async () => {
             await dispatch(getOneProduct(id))
-            await dispatch(getAllCategory());
-            await dispatch(getAllBrand());
+            await dispatch(getAllCategory(50));
+            await dispatch(getAllBrand(50));
         }
         run();
     }, [])
@@ -40,7 +40,7 @@ const AdminEditProductsHook = (id) => {
     const [options, setOptions] = useState([]);
 
     //values images products
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState({});
     //values state
     const [prodName, setProdName] = useState('');
     const [prodDescription, setProdDescription] = useState('');
@@ -54,16 +54,21 @@ const AdminEditProductsHook = (id) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (item.data) {
-            console.log(item.data.images)
-            setImages(item.data.images)
-            setProdName(item.data.title)
-            setProdDescription(item.data.description)
-            setPriceBefore(item.data.price)
-            setQty(item.data.quantity)
-            setCatID(item.data.category)
-            SetBrandID(item.data.brand)
-            setColors(item.data.availableColors)
+        if (item && item.data) {
+            const productData = item.data || {};
+            const convertedImages = {};
+            (Array.isArray(productData.images) ? productData.images : []).forEach((img, index) => {
+                convertedImages[index] = img;
+            });
+            setImages(convertedImages);
+            setProdName(productData.title || '');
+            setProdDescription(productData.description || '');
+            setPriceBefore(productData.price || 0);
+            setQty(productData.quantity || 0);
+            setCatID(productData.category || '0');
+            SetBrandID(productData.brand || '0');
+            setColors(Array.isArray(productData.availableColors) ? productData.availableColors : []);
+            setSeletedSubID(Array.isArray(productData.subCategory) ? productData.subCategory : []);
         }
     }, [item])
 
@@ -127,8 +132,10 @@ const AdminEditProductsHook = (id) => {
     }, [CatID])
 
     useEffect(() => {
-        if (subCat) {
+        if (subCat && Array.isArray(subCat.data)) {
             setOptions(subCat.data)
+        } else {
+            setOptions([])
         }
     }, [subCat])
 
@@ -168,30 +175,29 @@ const AdminEditProductsHook = (id) => {
     //to save data 
     const handelSubmit = async (e) => {
         e.preventDefault();
-        if (CatID === 0 || prodName === "" || prodDescription === "" || images.length <= 0 || priceBefore <= 0) {
+        const imageKeys = Object.keys(images || {});
+        if (CatID === '' || CatID === '0' || prodName === "" || prodDescription === "" || imageKeys.length === 0 || priceBefore <= 0 || priceBefore === 'السعر قبل الخصم') {
             notify("من فضلك اكمل البيانات", "warn")
             return;
         }
-        console.log(images[0])
+
+        const imageValues = Object.values(images);
         let imgCover;
-        if (images[0].length <= 1000) {
-            convertURLtoFile(images[0]).then(val => imgCover = val)
+        if (imageValues[0].length <= 1000) {
+            imgCover = await convertURLtoFile(imageValues[0])
         } else {
-            imgCover = dataURLtoFile(images[0], Math.random() + ".png")
+            imgCover = dataURLtoFile(imageValues[0], Math.random() + ".png")
         }
 
         let itemImages = []
-        //convert array of base 64 image to file 
-        Array.from(Array(Object.keys(images).length).keys()).map(
-            (item, index) => {
-                if (images[index].length <= 1000) {
-                    convertURLtoFile(images[index]).then(val => itemImages.push(val))
-                }
-                else {
-                    itemImages.push(dataURLtoFile(images[index], Math.random() + ".png"))
-                }
-            })
-
+        for (let i = 0; i < imageValues.length; i++) {
+            if (imageValues[i].length <= 1000) {
+                const file = await convertURLtoFile(imageValues[i])
+                itemImages.push(file)
+            } else {
+                itemImages.push(dataURLtoFile(imageValues[i], Math.random() + ".png"))
+            }
+        }
 
         const formData = new FormData();
         formData.append("title", prodName);
@@ -202,23 +208,14 @@ const AdminEditProductsHook = (id) => {
         formData.append("category", CatID);
         formData.append("brand", BrandID);
 
-        setTimeout(() => {
-            formData.append("imageCover", imgCover);
-            itemImages.map((item) => formData.append("images", item))
-        }, 1000);
-
-        setTimeout(() => {
-            console.log(imgCover)
-            console.log(itemImages)
-        }, 1000);
+        formData.append("imageCover", imgCover);
+        itemImages.map((item) => formData.append("images", item))
 
         colors.map((color) => formData.append("availableColors", color))
         seletedSubID.map((item) => formData.append("subcategory", item._id))
-        setTimeout(async () => {
-            // setLoading(true)
-            //   await dispatch(updateProducts(id, formData))
-            //  setLoading(false)
-        }, 1000);
+        setLoading(true)
+        await dispatch(updateProducts(id, formData))
+        setLoading(false)
 
     }
 
@@ -230,7 +227,7 @@ const AdminEditProductsHook = (id) => {
         if (loading === false) {
             //setCatID(0)
             setColors([])
-            setImages([])
+            setImages({})
             setProdName('')
             setProdDescription('')
             setPriceBefore('السعر قبل الخصم')

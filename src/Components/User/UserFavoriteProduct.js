@@ -22,7 +22,7 @@ const UserFavoriteProduct = () => {
     const res = useSelector(state => state.addToWishListReducer.allWishList)
     useEffect(() => {
         if (loading === false) {
-            if (res)
+            if (res && res.data && Array.isArray(res.data))
                 setItems(res.data)
         }
     }, [loading])

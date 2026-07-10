@@ -18,7 +18,7 @@ const BrandCard = ({img}) => {
             border: "none",
             backgroundColor: "#FFFFFF",
           }}>
-          <Card.Img style={{ width: "100%", height: "151px" }} src={img} />
+          <Card.Img style={{ width: "100%", height: "151px" }} src={img} onError={(e) => { e.target.src = '/images/brand1.png' }} />
         </Card>
       </Col>
     )

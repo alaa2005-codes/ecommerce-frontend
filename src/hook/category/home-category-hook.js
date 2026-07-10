@@ -7,7 +7,7 @@ const HomeCategoryHook = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getAllCategory());
+        dispatch(getAllCategory(8));
     }, [])
     //get last catgeory state from redux
     const category = useSelector(state => state.allCategory.category)

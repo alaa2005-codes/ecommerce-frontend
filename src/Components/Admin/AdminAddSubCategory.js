@@ -3,9 +3,11 @@ import { Row, Col } from 'react-bootstrap'
 
 import { ToastContainer } from 'react-toastify';
 import addSubcategoryhook from './../../hook/subcategory/add-subcategory-hook';
+import { normalizeListData } from '../../utils/normalizeData';
 
 const AdminAddSubCategory = () => {
     const [id, name, loading, category, subcategory, handelChange, handelSubmit, onChangeName] = addSubcategoryhook();
+    const categoryOptions = normalizeListData(category);
 
     return (
         <div>
@@ -22,9 +24,9 @@ const AdminAddSubCategory = () => {
                     <select name="category" id="cat" className="select mt-3 px-2 " onChange={handelChange}>
                         <option value="0">اختر تصنيف رئيسي</option>
                         {
-                            category.data ? (category.data.map(item => {
+                            categoryOptions.map(item => {
                                 return (<option key={item._id} value={item._id}>{item.name}</option>)
-                            })) : null
+                            })
                         }
                     </select>
                 </Col>

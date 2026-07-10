@@ -8,12 +8,16 @@ import MultiImageInput from 'react-multiple-image-input';
 import { CompactPicker } from 'react-color'
 import { ToastContainer } from 'react-toastify';
 import AdminAddProductsHook from './../../hook/products/add-products-hook';
+import { normalizeListData } from '../../utils/normalizeData';
 
 const AdminAddProducts = () => {
 
     const [onChangeDesName, onChangeQty, onChangeColor, onChangePriceAfter, onChangePriceBefor, onChangeProdName, showColor, category, brand, priceAftr, images, setImages, onSelect, onRemove, options, handelChangeComplete, removeColor, onSeletCategory, handelSubmit, onSeletBrand, colors, priceBefore, qty, prodDescription, prodName] =
         AdminAddProductsHook();
-        
+
+    const categoryOptions = normalizeListData(category);
+    const brandOptions = normalizeListData(brand);
+
     return (
         <div>
             <Row className="justify-content-start ">
@@ -71,12 +75,11 @@ const AdminAddProducts = () => {
                         className="select input-form-area mt-3 px-2 ">
                         <option value="0">التصنيف الرئيسي</option>
                         {
-                            category.data ? (category.data.map((item, index) => {
+                            categoryOptions.map((item, index) => {
                                 return (
                                     <option key={index} value={item._id}>{item.name}</option>
                                 )
-                            })) : null
-
+                            })
                         }
                     </select>
 
@@ -95,12 +98,11 @@ const AdminAddProducts = () => {
                         className="select input-form-area mt-3 px-2 ">
                         <option value="0">اختر ماركة</option>
                         {
-                            brand.data ? (brand.data.map((item, index) => {
+                            brandOptions.map((item, index) => {
                                 return (
                                     <option key={index} value={item._id}>{item.name}</option>
                                 )
-                            })) : null
-
+                            })
                         }
                     </select>
                     <div className="text-form mt-3 "> الالوان المتاحه للمنتج</div>

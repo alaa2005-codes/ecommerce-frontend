@@ -5,6 +5,9 @@ import prod1 from '../../images/prod1.png'
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProducts } from '../../redux/actions/productsAction';
 const AdminAllProductsCard = ({ item }) => {
+    if (!item) {
+        return null;
+    }
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -55,7 +58,7 @@ const AdminAllProductsCard = ({ item }) => {
                     </Col>
                 </Row>
                 <Link to={`/products/${item._id}`} style={{ textDecoration: "none" }}>
-                    <Card.Img style={{ height: "228px", width: "100%" }} src={item.imageCover} />
+                    <Card.Img style={{ height: "228px", width: "100%" }} src={item.imageCover || '/images/mobile.png'} onError={(e) => { e.target.src = '/images/mobile.png' }} />
                     <Card.Body>
                         <Card.Title>
                             <div className="card-title">

@@ -10,8 +10,8 @@ const SidebarSearchHook = () => {
     //when first load
     useEffect(() => {
         const get = async () => {
-            await dispatch(getAllCategory());
-            await dispatch(getAllBrand());
+            await dispatch(getAllCategory(50));
+            await dispatch(getAllBrand(50));
         }
         get();
     }, [])

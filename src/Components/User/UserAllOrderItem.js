@@ -3,6 +3,13 @@ import { Row, Col } from 'react-bootstrap'
 import UserAllOrderCard from './UserAllOrderCard'
 
 const UserAllOrderItem = ({ order }) => {
+    if (!order) {
+        return (
+            <div className="user-order mt-2">
+                <Row><div className="py-2 order-title">لا يوجد طلبات</div></Row>
+            </div>
+        );
+    }
     return (
         <div className="user-order mt-2">
             <Row>

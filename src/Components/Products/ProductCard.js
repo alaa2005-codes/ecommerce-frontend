@@ -28,6 +28,7 @@ const ProductCard = ({ item, favProd }) => {
                         style={{ height: "228px", width: "100%" }} 
                         src={item.imageCover || '/images/mobile.png'} 
                         alt={item.title}
+                        onError={(e) => { e.target.src = '/images/mobile.png' }}
                     />
                 </Link>
                 <div className="d-flex justify-content-end mx-2">
@@ -47,7 +48,7 @@ const ProductCard = ({ item, favProd }) => {
                     <Card.Title className="card-title">
                         {item.title}
                     </Card.Title>
-                    <Card.Text className="d-flex justify-content-between">
+                    <div className="d-flex justify-content-between align-items-center mt-2">
                         <div className="d-flex">
                             <img
                                 className=""
@@ -62,7 +63,7 @@ const ProductCard = ({ item, favProd }) => {
                             <div className="card-price">{item.price}</div>
                             <div className="card-currency mx-1">ليرة سورية</div>
                         </div>
-                    </Card.Text>
+                    </div>
                 </Card.Body>
             </Card>
             <ToastContainer />

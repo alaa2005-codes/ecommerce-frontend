@@ -14,11 +14,13 @@ const subcategoryReducer = (state = inital, action) => {
             }
         case GET_SUB_CATEGORY:
             return {
+                ...state,
                 subcategory: action.payload,
                 loading: false,
             }
         case GET_ERROR:
             return {
+                ...state,
                 loading: true,
                 subcategory: action.payload,
             }

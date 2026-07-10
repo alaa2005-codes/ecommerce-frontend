@@ -11,8 +11,8 @@ const AdminAddProductsHook = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getAllCategory());
-        dispatch(getAllBrand());
+        dispatch(getAllCategory(50));
+        dispatch(getAllBrand(50));
     }, [])
     //get last catgeory state from redux
     const category = useSelector(state => state.allCategory.category)
@@ -132,17 +132,20 @@ const AdminAddProductsHook = () => {
     //to save data 
     const handelSubmit = async (e) => {
         e.preventDefault();
-        if (CatID === 0 || prodName === "" || prodDescription === "" || images.length <= 0 || priceBefore <= 0) {
+        const imageKeys = Object.keys(images);
+        if (CatID === '' || CatID === '0' || prodName === "" || prodDescription === "" || imageKeys.length === 0 || priceBefore <= 0 || priceBefore === 'السعر قبل الخصم') {
             notify("من فضلك اكمل البيانات", "warn")
             return;
         }
 
+        const imageValues = Object.values(images);
+
         //convert base 64 image to file 
-        const imgCover = dataURLtoFile(images[0], Math.random() + ".png")
+        const imgCover = dataURLtoFile(imageValues[0], Math.random() + ".png")
         //convert array of base 64 image to file 
-        const itemImages = Array.from(Array(Object.keys(images).length).keys()).map(
+        const itemImages = imageValues.map(
             (item, index) => {
-                return dataURLtoFile(images[index], Math.random() + ".png")
+                return dataURLtoFile(item, Math.random() + ".png")
             }
         )
 
@@ -155,22 +158,15 @@ const AdminAddProductsHook = () => {
         formData.append("category", CatID);
         formData.append("brand", BrandID);
 
-        setTimeout(() => {
-            formData.append("imageCover", imgCover);
-            itemImages.map((item) => formData.append("images", item))
-        }, 1000);
-
-        setTimeout(() => {
-            console.log(imgCover)
-            console.log(itemImages)
-        }, 1000);
         colors.map((color) => formData.append("availableColors", color))
         seletedSubID.map((item) => formData.append("subcategory", item._id))
-        setTimeout(async () => {
-            setLoading(true)
-            await dispatch(createProduct(formData))
-            setLoading(false)
-        }, 1000);
+
+        formData.append("imageCover", imgCover);
+        itemImages.map((item) => formData.append("images", item))
+
+        setLoading(true)
+        await dispatch(createProduct(formData))
+        setLoading(false)
 
     }
 
@@ -195,8 +191,10 @@ const AdminAddProductsHook = () => {
             if (product) {
                 if (product.status === 201) {
                     notify("تم الاضافة بنجاح", "success")
+                } else if (product.status === 200) {
+                    notify("تم الاضافة بنجاح", "success")
                 } else {
-                    notify("هناك مشكله", "error")
+                    notify("هناك مشكله في الاضافة", "error")
                 }
             }
         }

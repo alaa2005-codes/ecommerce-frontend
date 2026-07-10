@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 
 const AdminSideBar = () => {
-    const user = useSelector(state => state.authReducer.user)
+    const [user, setUser] = useState({})
+    useEffect(() => {
+        if (localStorage.getItem("user") != null)
+            setUser(JSON.parse(localStorage.getItem("user")))
+    }, [])
 
     return (
         <div className="sidebar">

@@ -11,6 +11,7 @@ const UserAllOrderCard = ({ item }) => {
                         height="120px" 
                         src={item.product?.imageCover || '/images/mobile.png'} 
                         alt={item.product?.title} 
+                        onError={(e) => { e.target.src = '/images/mobile.png' }}
                     />
                 </Col>
                 <Col xs="8" md="6">

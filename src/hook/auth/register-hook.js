@@ -31,26 +31,27 @@ const RegisterHook = () => {
     }
 
     const validationValues = () => {
-        if (name === "") {
+        if (name.trim() === "") {
             notify("من فضلك ادخل اسم المستخدم", "error")
-            return;
+            return false;
         }
-        if (phone.length <= 10) {
+        if (!phone || phone.length < 11) {
             notify("من فضلك ادخل رقم هاتف صحيح", "error")
-            return;
+            return false;
         }
-        if (password != confirmPassword) {
+        if (password !== confirmPassword) {
             notify("من فضلك تاكيد من كلمه السر", "error")
-            return;
+            return false;
         }
-
+        return true;
     }
 
-    const res = useSelector(state => state.authReducer.createUser)
+    const res = useSelector(state => state.authReducer?.createUser)
 
     //save data
     const OnSubmit = async () => {
-        validationValues();
+        if (!validationValues()) return;
+
         setLoading(true)
         await dispatch(createNewUser({
             name,
@@ -63,35 +64,25 @@ const RegisterHook = () => {
     }
 
     useEffect(() => {
-        if (loading === false) {
-            if (res) {
-                console.log(res)
-                if (res.data.token) {
-                    localStorage.setItem("token", res.data.token)
-                    notify("تم تسجيل الحساب بنجاح", "success")
-                    setTimeout(() => {
-                        navigate('/login')
-                    }, 2000);
-                }
+        if (loading === false && res) {
+            if (res?.data?.token) {
+                localStorage.setItem("token", res.data.token)
+                notify("تم تسجيل الحساب بنجاح", "success")
+                setTimeout(() => {
+                    navigate('/login')
+                }, 1500);
+            }
 
-                if (res.data.errors) {
-                    if (res.data.errors[0].msg === "E-mail already in use")
-                        notify("هذا الايميل مسجل من قبل", "error")
-                }
-                if (res.data.errors) {
-                    if (res.data.errors[0].msg === "accept only egypt phone numbers")
-                        notify("يجب ان يكون الرقم مصري مكون من 11 رقم", "error")
-                }
-
-                if (res.data.errors) {
-                    if (res.data.errors[0].msg === "must be at least 6 chars")
-                        notify("يجب ان لاقل كلمه السر عن 6 احرف او ارقام", "error")
-                }
-
-
+            const errorMessage = res?.data?.errors?.[0]?.msg;
+            if (errorMessage === "E-mail already in use") {
+                notify("هذا الايميل مسجل من قبل", "error")
+            } else if (errorMessage === "accept only egypt phone numbers") {
+                notify("يجب ان يكون الرقم مصري مكون من 11 رقم", "error")
+            } else if (errorMessage === "must be at least 6 chars") {
+                notify("يجب ان لاقل كلمه السر عن 6 احرف او ارقام", "error")
             }
         }
-    }, [loading])
+    }, [loading, res, navigate])
 
     return [name, email, phone, password, confirmPassword, loading, onChangeName, onChangeEmail, onChangePhone, onChangePassword, onChangeConfirmPassword, OnSubmit]
 }

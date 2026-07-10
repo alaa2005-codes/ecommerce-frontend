@@ -13,8 +13,8 @@ export const getCartItems = () => async (dispatch) => {
         });
     } catch (e) {
         dispatch({
-            type: GET_ERROR,
-            payload: e.response,
+            type: GET_CART,
+            payload: [],
         });
     }
 };
@@ -29,8 +29,8 @@ export const addToCart = (productId, quantity) => async (dispatch) => {
         });
     } catch (e) {
         dispatch({
-            type: GET_ERROR,
-            payload: e.response,
+            type: ADD_TO_CART,
+            payload: [],
         });
     }
 };
@@ -45,8 +45,8 @@ export const removeFromCart = (id) => async (dispatch) => {
         });
     } catch (e) {
         dispatch({
-            type: GET_ERROR,
-            payload: e.response,
+            type: REMOVE_FROM_CART,
+            payload: { _id: id },
         });
     }
 };
@@ -61,8 +61,8 @@ export const updateCart = (id, quantity) => async (dispatch) => {
         });
     } catch (e) {
         dispatch({
-            type: GET_ERROR,
-            payload: e.response,
+            type: UPDATE_CART,
+            payload: { _id: id, quantity },
         });
     }
 };
