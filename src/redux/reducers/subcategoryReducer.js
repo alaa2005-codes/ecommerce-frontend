@@ -1,0 +1,31 @@
+import { GET_ERROR, GET_SUB_CATEGORY, CREATE_SUB_CATEGORY } from '../type'
+
+const inital = {
+    subcategory: [],
+    loading: true,
+}
+const subcategoryReducer = (state = inital, action) => {
+    switch (action.type) {
+        case CREATE_SUB_CATEGORY:
+            return {
+                ...state,
+                subcategory: action.payload,
+                loading: false,
+            }
+        case GET_SUB_CATEGORY:
+            return {
+                ...state,
+                subcategory: action.payload,
+                loading: false,
+            }
+        case GET_ERROR:
+            return {
+                ...state,
+                loading: true,
+                subcategory: action.payload,
+            }
+        default:
+            return state;
+    }
+}
+export default subcategoryReducer
