@@ -15,17 +15,16 @@ const RateItem = ({ review }) => {
     const [isUser, handelDelete, handleShow, handleClose, showDelete] = DeleteRateHook(review);
     const [showEdit, handleCloseEdit, handleShowEdit, handelEdit, onChangeRateText, newRateText, OnChangeRateValue, newRateValue] = EditRateHook(review)
 
+    // النجمة الافتراضية (★) بدل أيقونات Font Awesome غير المُحمَّلة (kit مقيد بدومين صاحبه)
     const setting = {
-        size: 20,
+        size: 30,
         count: 5,
         color: "#979797",
         activeColor: "#ffc107",
         value: newRateValue,
         a11y: true,
-        isHalf: true,
-        emptyIcon: <i className="far fa-star" />,
-        halfIcon: <i className="fa fa-star-half-alt" />,
-        filledIcon: <i className="fa fa-star" />,
+        isHalf: false,
+        edit: true,
         onChange: newValue => {
             OnChangeRateValue(newValue);
         }

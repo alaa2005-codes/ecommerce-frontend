@@ -15,13 +15,11 @@ const safeParseArray = (key) => {
     }
 };
 
-// قراءة كل الفلاتر المخزنة
+// قراءة كل الفلاتر المخزنة (أُلغيت فلترة الأسعار بناء على طلب فريق العمل)
 const readFilters = () => ({
     keyword: localStorage.getItem('searchWord') || '',
     categories: safeParseArray('catChecked'),
     brands: safeParseArray('brandChecked'),
-    priceFrom: parseFloat(localStorage.getItem('priceFrom')),
-    priceTo: parseFloat(localStorage.getItem('priceTo')),
     sortType: localStorage.getItem('sortType') || '',
 });
 
@@ -55,13 +53,6 @@ const applyFilters = (products, filters) => {
         result = result.filter(p => idsOf(p.brand).some(id => filters.brands.includes(id)));
     }
 
-    if (!isNaN(filters.priceFrom) && filters.priceFrom > 0) {
-        result = result.filter(p => Number(p.price) >= filters.priceFrom);
-    }
-    if (!isNaN(filters.priceTo) && filters.priceTo > 0) {
-        result = result.filter(p => Number(p.price) <= filters.priceTo);
-    }
-
     switch (filters.sortType) {
         case 'الاكثر مبيعا':
             result.sort((a, b) => (b.sold || 0) - (a.sold || 0));
@@ -81,6 +72,10 @@ const applyFilters = (products, filters) => {
 
     return result;
 };
+
+// تنظيف قيم فلترة الأسعار القديمة المخزنة سابقاً حتى لا تحجب المنتجات دون واجهة لإلغائها
+localStorage.removeItem('priceFrom');
+localStorage.removeItem('priceTo');
 
 const ViewSearchProductsHook = () => {
     const dispatch = useDispatch();

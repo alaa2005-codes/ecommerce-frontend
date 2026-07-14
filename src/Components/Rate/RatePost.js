@@ -15,17 +15,18 @@ const RatePost = () => {
   if (user)
     name = user.name
 
+  // النجمة الافتراضية (★) بدل أيقونات Font Awesome: سكربت الـ kit الموجود
+  // بالمشروع مقيد بدومين صاحبه الأصلي فلا يُحمَّل هنا، وكانت النجوم تظهر
+  // فارغة وغير قابلة للنقر — النجمة الافتراضية لا تعتمد على أي ملف خارجي
   const setting = {
-    size: 20,
+    size: 30,
     count: 5,
     color: "#979797",
     activeColor: "#ffc107",
     value: rateValue,
     a11y: true,
-    isHalf: true,
-    emptyIcon: <i className="far fa-star" />,
-    halfIcon: <i className="fa fa-star-half-alt" />,
-    filledIcon: <i className="fa fa-star" />,
+    isHalf: false,
+    edit: true,
     onChange: newValue => {
       OnChangeRateValue(newValue);
     }

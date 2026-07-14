@@ -17,7 +17,8 @@ const ViewAllReviewHook = (id) => {
         setLoading(true)
         dispatch(allReviewProduct(id, 1, 5))
         setLoading(false)
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id])
 
     const onPress = async (page) => {
         await dispatch(allReviewProduct(id, page, 5))

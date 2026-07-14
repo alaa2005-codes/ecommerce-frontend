@@ -3,7 +3,7 @@ import { Row } from 'react-bootstrap'
 import SidebarSearchHook from '../../hook/search/sidebar-search-hook';
 
 const SideFilter = () => {
-  const [category, brand, clickCategory, clickBrand, priceFrom, priceTo, catChecked, brandChecked, from, to] = SidebarSearchHook();
+  const [category, brand, clickCategory, clickBrand, , , catChecked, brandChecked] = SidebarSearchHook();
 
   return (
     <div className="mt-3">
@@ -67,29 +67,6 @@ const SideFilter = () => {
           }
         </div>
 
-        <div className="filter-title my-3">السعر</div>
-        <div className="d-flex">
-          <p className="filter-sub my-2">من:</p>
-          <input
-            value={from}
-            onChange={priceFrom}
-            className="m-2 text-center"
-            type="number"
-            min="0"
-            style={{ width: "70px", height: "25px" }}
-          />
-        </div>
-        <div className="d-flex">
-          <p className="filter-sub my-2">الي:</p>
-          <input
-            value={to}
-            onChange={priceTo}
-            className="m-2 text-center"
-            type="number"
-            min="0"
-            style={{ width: "70px", height: "25px" }}
-          />
-        </div>
       </Row >
     </div >
   )
