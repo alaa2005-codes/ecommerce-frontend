@@ -15,6 +15,7 @@ const CategoryContainer = ({ data, loading }) => {
                         categories.map((item, index) => (
                             <CategoryCard
                                 key={item._id || index}
+                                id={item?._id}
                                 title={item?.name || 'تصنيف'}
                                 img={item?.image || ''}
                                 background={colors[index % colors.length]}

@@ -2,7 +2,8 @@ import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 import deleteicon from '../../images/delete.png'
 import { useDispatch } from 'react-redux'
-import { removeFromCart } from '../../redux/actions/cartAction'
+import { removeFromCart, updateCart } from '../../redux/actions/cartAction'
+import fixImageUrl from '../../utils/imageUrl'
 
 const CartItem = ({ item }) => {
     const dispatch = useDispatch();
@@ -11,13 +12,17 @@ const CartItem = ({ item }) => {
         dispatch(removeFromCart(item._id));
     };
 
+    const handleQuantityChange = (e) => {
+        dispatch(updateCart(item._id, e.target.value));
+    };
+
     return (
         <Col xs="12" className="cart-item-body my-2 d-flex px-2">
-            <img 
-                width="160px" 
-                height="197px" 
-                src={item.imageCover || '/images/mobile.png'} 
-                alt={item.title} 
+            <img
+                width="160px"
+                height="197px"
+                src={fixImageUrl(item.imageCover, '/images/mobile.png')}
+                alt={item.title}
                 onError={(e) => { e.target.src = '/images/mobile.png' }}
             />
             <div className="w-100">
@@ -72,8 +77,9 @@ const CartItem = ({ item }) => {
                             <input
                                 className="mx-2"
                                 type="number"
-                                style={{ width: "40px", height: "25px" }}
+                                style={{ width: "50px", height: "25px" }}
                                 value={item.quantity || 1}
+                                onChange={handleQuantityChange}
                                 min="1"
                             />
                         </div>

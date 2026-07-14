@@ -15,12 +15,19 @@ const DeleteRateHook = (review) => {
     const handleClose = () => setShowDelete(false);
     const handleShow = () => setShowDelete(true);
 
-    let user = JSON.parse(localStorage.getItem("user"))
+    let user = null;
+    try {
+        user = JSON.parse(localStorage.getItem("user"))
+    } catch (e) {
+        user = null;
+    }
 
     useEffect(() => {
-        if (review.user._id === user._id) {
+        // فحص آمن: قد لا يكون هناك مستخدم مسجل
+        if (user && user._id && review?.user?._id === user._id) {
             setIsUser(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

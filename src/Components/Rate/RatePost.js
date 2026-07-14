@@ -20,7 +20,7 @@ const RatePost = () => {
     count: 5,
     color: "#979797",
     activeColor: "#ffc107",
-    value: 7.5,
+    value: rateValue,
     a11y: true,
     isHalf: true,
     emptyIcon: <i className="far fa-star" />,

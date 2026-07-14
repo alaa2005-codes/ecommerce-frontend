@@ -212,7 +212,8 @@ const AdminEditProductsHook = (id) => {
         itemImages.map((item) => formData.append("images", item))
 
         colors.map((color) => formData.append("availableColors", color))
-        seletedSubID.map((item) => formData.append("subcategory", item._id))
+        // الباك إند يتوقع الحقل باسم subCategory (حرف C كبير)
+        seletedSubID.map((item) => formData.append("subCategory", item._id || item))
         setLoading(true)
         await dispatch(updateProducts(id, formData))
         setLoading(false)

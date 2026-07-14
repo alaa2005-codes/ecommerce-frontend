@@ -5,51 +5,18 @@ const initialState = {
     loading: true,
 };
 
+// كل الأكشنات ترسل مصفوفة عناصر السلة كاملة في payload
 const cartReducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_CART: {
-            const payload = action.payload;
-            const items = Array.isArray(payload?.data)
-                ? payload.data
-                : Array.isArray(payload)
-                    ? payload
-                    : [];
-
+        case GET_CART:
+        case ADD_TO_CART:
+        case REMOVE_FROM_CART:
+        case UPDATE_CART:
             return {
                 ...state,
-                cartItems: items,
+                cartItems: Array.isArray(action.payload) ? action.payload : [],
                 loading: false,
             };
-        }
-        case ADD_TO_CART: {
-            const payload = action.payload;
-            const items = Array.isArray(payload?.data)
-                ? payload.data
-                : Array.isArray(payload)
-                    ? payload
-                    : state.cartItems;
-
-            return {
-                ...state,
-                cartItems: items,
-            };
-        }
-        case REMOVE_FROM_CART: {
-            const removedId = action.payload?.data?._id || action.payload?._id;
-            return {
-                ...state,
-                cartItems: state.cartItems.filter(item => item._id !== removedId),
-            };
-        }
-        case UPDATE_CART: {
-            const updatedItem = action.payload?.data || action.payload;
-            return {
-                ...state,
-                cartItems: state.cartItems.map(item =>
-                    item._id === updatedItem?._id ? updatedItem : item
-                ),
-            };
-        }
         default:
             return state;
     }

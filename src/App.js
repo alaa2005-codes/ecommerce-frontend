@@ -17,6 +17,7 @@ import AdminAddBrandPage from "./Page/Admin/AdminAddBrandPage";
 import AdminAddCategoryPage from "./Page/Admin/AdminAddCategoryPage";
 import AdminAddSubCategoryPage from "./Page/Admin/AdminAddSubCategoryPage";
 import AdminAddProductsPage from "./Page/Admin/AdminAddProductsPage";
+import AdminAddCouponPage from "./Page/Admin/AdminAddCouponPage";
 import AdminUsersPage from './Components/Admin/AdminUsersPage';
 import UserAllOrdersPage from "./Page/User/UserAllOrdersPage";
 import UserFavoriteProductsPage from "./Page/User/UserFavoriteProductsPage";
@@ -43,8 +44,8 @@ function App() {
           <Route path="/allbrand" element={<AllBrandPage />} />
           <Route path="/products" element={<ShopProductsPage />} />
           <Route path="/products/:id" element={<ProductDetalisPage />} />
-          <Route path="/cart" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><CartPage /></ProtectedRoute>} />
-          <Route path="/order/paymethoud" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><ChoosePayMethoudPage /></ProtectedRoute>} />
+          <Route path="/cart" element={<ProtectedRoute allowedRoles={['user']}><CartPage /></ProtectedRoute>} />
+          <Route path="/order/paymethoud" element={<ProtectedRoute allowedRoles={['user']}><ChoosePayMethoudPage /></ProtectedRoute>} />
           <Route path="/admin/allproducts" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAllProductsPage /></ProtectedRoute>} />
           <Route path="/admin/allorders" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAllOrdersPage /></ProtectedRoute>} />
           <Route path="/admin/orders/:id" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminOrderDetalisPage /></ProtectedRoute>} />
@@ -52,6 +53,7 @@ function App() {
           <Route path="/admin/addcategory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddCategoryPage /></ProtectedRoute>} />
           <Route path="/admin/addsubcategory" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddSubCategoryPage /></ProtectedRoute>} />
           <Route path="/admin/addproduct" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddProductsPage /></ProtectedRoute>} />
+          <Route path="/admin/addcoupon" element={<ProtectedRoute allowedRoles={['admin', 'manager']}><AdminAddCouponPage /></ProtectedRoute>} />
           <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin']}><AdminUsersPage /></ProtectedRoute>} />
           <Route path="/user/allorders" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserAllOrdersPage /></ProtectedRoute>} />
           <Route path="/user/favoriteproducts" element={<ProtectedRoute allowedRoles={['user', 'manager', 'admin']}><UserFavoriteProductsPage /></ProtectedRoute>} />

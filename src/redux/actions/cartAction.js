@@ -1,68 +1,71 @@
-import { useGetDataToken } from '../../hooks/useGetData';
-import { useInsertData } from '../../hooks/useInsertData';
-import useDeleteData from '../../hooks/useDeleteData';
-import { GET_CART, ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART, GET_ERROR } from '../type';
+import { GET_CART, ADD_TO_CART, REMOVE_FROM_CART, UPDATE_CART } from '../type';
+import { getCurrentUser } from '../../utils/currentUser';
 
-// Get cart items
-export const getCartItems = () => async (dispatch) => {
+// الباك إند المنشور لا يوفر مسار /cart، لذلك تُحفظ السلة محلياً
+// في localStorage بمفتاح خاص بكل مستخدم حتى لا تختلط سلال الحسابات
+const cartKey = () => {
+    const user = getCurrentUser();
+    return user && user._id ? `cart_${user._id}` : 'cart_guest';
+};
+
+const readCart = () => {
     try {
-        const response = await useGetDataToken('/cart');
-        dispatch({
-            type: GET_CART,
-            payload: response,
-        });
+        const items = JSON.parse(localStorage.getItem(cartKey()) || '[]');
+        return Array.isArray(items) ? items : [];
     } catch (e) {
-        dispatch({
-            type: GET_CART,
-            payload: [],
-        });
+        return [];
     }
 };
 
-// Add to cart
-export const addToCart = (productId, quantity) => async (dispatch) => {
-    try {
-        const response = await useInsertData('/cart', { productId, quantity });
-        dispatch({
-            type: ADD_TO_CART,
-            payload: response,
-        });
-    } catch (e) {
-        dispatch({
-            type: ADD_TO_CART,
-            payload: [],
+const writeCart = (items) => {
+    localStorage.setItem(cartKey(), JSON.stringify(items));
+};
+
+// Get cart items
+export const getCartItems = () => (dispatch) => {
+    dispatch({ type: GET_CART, payload: readCart() });
+};
+
+// Add to cart (product = كائن المنتج كاملاً)
+export const addToCart = (product, quantity = 1) => (dispatch) => {
+    const items = readCart();
+    const existing = items.find(i => i._id === product._id);
+    if (existing) {
+        existing.quantity = (existing.quantity || 1) + quantity;
+    } else {
+        items.push({
+            _id: product._id,
+            title: product.title,
+            price: product.price,
+            imageCover: product.imageCover,
+            category: product.category,
+            brand: product.brand,
+            colors: product.colors,
+            ratingsAverage: product.ratingsAverage,
+            quantity,
         });
     }
+    writeCart(items);
+    dispatch({ type: ADD_TO_CART, payload: items });
 };
 
 // Remove from cart
-export const removeFromCart = (id) => async (dispatch) => {
-    try {
-        const response = await useDeleteData(`/cart/${id}`);
-        dispatch({
-            type: REMOVE_FROM_CART,
-            payload: response,
-        });
-    } catch (e) {
-        dispatch({
-            type: REMOVE_FROM_CART,
-            payload: { _id: id },
-        });
-    }
+export const removeFromCart = (id) => (dispatch) => {
+    const items = readCart().filter(i => i._id !== id);
+    writeCart(items);
+    dispatch({ type: REMOVE_FROM_CART, payload: items });
 };
 
 // Update cart quantity
-export const updateCart = (id, quantity) => async (dispatch) => {
-    try {
-        const response = await useInsertData(`/cart/${id}`, { quantity });
-        dispatch({
-            type: UPDATE_CART,
-            payload: response,
-        });
-    } catch (e) {
-        dispatch({
-            type: UPDATE_CART,
-            payload: { _id: id, quantity },
-        });
-    }
+export const updateCart = (id, quantity) => (dispatch) => {
+    const safeQuantity = Math.max(1, Number(quantity) || 1);
+    const items = readCart().map(i => (i._id === id ? { ...i, quantity: safeQuantity } : i));
+    writeCart(items);
+    dispatch({ type: UPDATE_CART, payload: items });
+};
+
+// Clear cart (بعد إتمام الشراء)
+export const clearCart = () => (dispatch) => {
+    writeCart([]);
+    dispatch({ type: GET_CART, payload: [] });
 };

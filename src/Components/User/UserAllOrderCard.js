@@ -1,5 +1,6 @@
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
+import fixImageUrl from '../../utils/imageUrl'
 
 const UserAllOrderCard = ({ item }) => {
     return (
@@ -9,7 +10,7 @@ const UserAllOrderCard = ({ item }) => {
                     <img 
                         width="93px" 
                         height="120px" 
-                        src={item.product?.imageCover || '/images/mobile.png'} 
+                        src={fixImageUrl(item.product?.imageCover, '/images/mobile.png')}
                         alt={item.product?.title} 
                         onError={(e) => { e.target.src = '/images/mobile.png' }}
                     />

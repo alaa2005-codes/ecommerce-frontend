@@ -93,20 +93,20 @@ const AdminAddProductsHook = () => {
 
     //when selet category store id
     const onSeletCategory = async (e) => {
-        if (e.target.value !== 0) {
-            await dispatch(getOneCategory(e.target.value))
+        const value = e.target.value
+        setCatID(value)
+        setSeletedSubID([])
+        if (value !== '0') {
+            await dispatch(getOneCategory(value))
         }
-        setCatID(e.target.value)
     }
     useEffect(() => {
-        if (CatID !== 0) {
-            if (subCat.data) {
-
-                setOptions(subCat.data)
-            }
-        } else
+        if (CatID !== '' && CatID !== '0' && subCat && Array.isArray(subCat.data)) {
+            setOptions(subCat.data)
+        } else {
             setOptions([])
-    }, [CatID])
+        }
+    }, [CatID, subCat])
 
     //when selet brand store id
     const onSeletBrand = (e) => {
@@ -159,7 +159,8 @@ const AdminAddProductsHook = () => {
         formData.append("brand", BrandID);
 
         colors.map((color) => formData.append("availableColors", color))
-        seletedSubID.map((item) => formData.append("subcategory", item._id))
+        // الباك إند يتوقع الحقل باسم subCategory (حرف C كبير)
+        seletedSubID.map((item) => formData.append("subCategory", item._id))
 
         formData.append("imageCover", imgCover);
         itemImages.map((item) => formData.append("images", item))

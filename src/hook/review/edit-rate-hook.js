@@ -9,8 +9,8 @@ const EditRateHook = (review) => {
 
     const [loading, setLoading] = useState(true)
 
-    const [newRateText, setNewRateText] = useState(review.review);
-    const [newRateValue, setNewRateValue] = useState(review.rating);
+    const [newRateText, setNewRateText] = useState(review.title);
+    const [newRateValue, setNewRateValue] = useState(review.ratings);
 
     const [showEdit, setShowEdit] = useState(false);
     const handleCloseEdit = () => setShowEdit(false);
@@ -26,8 +26,8 @@ const EditRateHook = (review) => {
     const handelEdit = async () => {
         setLoading(true)
         await dispatch(updateReviewOnProduct(review._id, {
-            review: newRateText,
-            rating: newRateValue
+            title: newRateText,
+            ratings: newRateValue
         }))
         setLoading(false)
         handleCloseEdit();

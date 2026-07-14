@@ -1,15 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Card, Col } from 'react-bootstrap'
 
 import rate from "../../images/rate.png";
 import { Link } from 'react-router-dom';
+import fixImageUrl from '../../utils/imageUrl';
 
-import { ToastContainer } from 'react-toastify';
-import ProductCardHook from './../../hook/products/product-card-hook';
-
-const ProductCard = ({ item, favProd }) => {
-
-    const [removeToWishListData, addToWishListData, handelFav, favImg] = ProductCardHook(item, favProd)
+const ProductCard = ({ item }) => {
 
     return (
         <Col xs="6" sm="6" md="4" lg="3" className="d-flex">
@@ -24,26 +20,13 @@ const ProductCard = ({ item, favProd }) => {
                     boxShadow: "0 2px 2px 0 rgba(151,151,151,0.5)",
                 }}>
                 <Link to={`/products/${item._id}`} style={{ textDecoration: 'none' }}>
-                    <Card.Img 
-                        style={{ height: "228px", width: "100%" }} 
-                        src={item.imageCover || '/images/mobile.png'} 
+                    <Card.Img
+                        style={{ height: "228px", width: "100%", objectFit: "cover" }}
+                        src={fixImageUrl(item.imageCover, '/images/mobile.png')}
                         alt={item.title}
                         onError={(e) => { e.target.src = '/images/mobile.png' }}
                     />
                 </Link>
-                <div className="d-flex justify-content-end mx-2">
-                    <img
-                        src={favImg}
-                        alt=""
-                        onClick={handelFav}
-                        className="text-center"
-                        style={{
-                            height: "24px",
-                            width: "26px",
-                            cursor: 'pointer'
-                        }}
-                    />
-                </div>
                 <Card.Body>
                     <Card.Title className="card-title">
                         {item.title}
@@ -66,7 +49,6 @@ const ProductCard = ({ item, favProd }) => {
                     </div>
                 </Card.Body>
             </Card>
-            <ToastContainer />
         </Col>
     )
 }

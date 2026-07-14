@@ -1,5 +1,6 @@
 import React from 'react'
 import { Col,Card } from 'react-bootstrap'
+import fixImageUrl from '../../utils/imageUrl'
 
 const BrandCard = ({img}) => {
     return (
@@ -18,7 +19,7 @@ const BrandCard = ({img}) => {
             border: "none",
             backgroundColor: "#FFFFFF",
           }}>
-          <Card.Img style={{ width: "100%", height: "151px" }} src={img} onError={(e) => { e.target.src = '/images/brand1.png' }} />
+          <Card.Img style={{ width: "100%", height: "151px" }} src={fixImageUrl(img, '/images/brand1.png')} onError={(e) => { e.target.src = '/images/brand1.png' }} />
         </Card>
       </Col>
     )

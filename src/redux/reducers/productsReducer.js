@@ -1,4 +1,12 @@
-import { DELETE_PRODUCTS, UPDATE_PRODUCTS, CREATE_PRODUCTS, GET_PRODUCT_LIKE, GET_PRODUCT_DETALIS, GET_ALL_PRODUCTS, GET_ERROR } from '../type'
+import { 
+    DELETE_PRODUCTS, 
+    UPDATE_PRODUCTS, 
+    CREATE_PRODUCTS, 
+    GET_PRODUCT_LIKE, 
+    GET_PRODUCT_DETALIS, 
+    GET_ALL_PRODUCTS, 
+    GET_ERROR 
+} from '../type'
 
 const inital = {
     products: [],
@@ -15,44 +23,44 @@ const productsReducer = (state = inital, action) => {
         case CREATE_PRODUCTS:
             return {
                 ...state,
-                products: action.payload,
+                products: action.payload || [], // ✅ تأكد من وجود payload
                 loading: false,
             }
         case GET_ALL_PRODUCTS:
             return {
                 ...state,
-                allProducts: action.payload,
+                allProducts: action.payload || [], // ✅ تأكد من وجود payload
                 loading: false,
             }
         case GET_PRODUCT_DETALIS:
             return {
-                ...state,  // ✅ أضف هذا السطر
-                oneProduct: action.payload,
+                ...state,
+                oneProduct: action.payload || {}, // ✅ تأكد من وجود payload
                 loading: false,
             }
         case GET_PRODUCT_LIKE:
             return {
                 ...state,
-                productLike: action.payload,
+                productLike: action.payload || [], // ✅ تأكد من وجود payload
                 loading: false,
             }
         case DELETE_PRODUCTS:
             return {
                 ...state,
-                deleteProducts: action.payload,
+                deleteProducts: action.payload || [], // ✅ تأكد من وجود payload
                 loading: false,
             }
         case UPDATE_PRODUCTS:
             return {
                 ...state,
-                updateProducts: action.payload,
+                updateProducts: action.payload || [], // ✅ تأكد من وجود payload
                 loading: false,
             }
         case GET_ERROR:
             return {
                 ...state,
-                loading: true,
-                products: action.payload,
+                loading: false,
+                products: action.payload || [],
             }
         default:
             return state;

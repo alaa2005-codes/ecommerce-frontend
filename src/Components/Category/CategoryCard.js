@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { Col } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import fallbackImage from '../../images/avatar.png'
+import fixImageUrl from '../../utils/imageUrl'
+import { notifyFiltersChanged } from '../../hook/products/view-search-products-hook'
 
-const CategoryCard = ({ background, img, title }) => {
-    const [imageSrc, setImageSrc] = useState(img || fallbackImage)
+const CategoryCard = ({ background, img, title, id }) => {
+    const navigate = useNavigate();
+    // إصلاح رابط الصورة ديناميكياً حتى تظهر أي صورة مرفوعة حديثاً
+    const [imageSrc, setImageSrc] = useState(() => fixImageUrl(img, fallbackImage))
 
     useEffect(() => {
-        setImageSrc(img || fallbackImage)
+        setImageSrc(fixImageUrl(img, fallbackImage))
     }, [img])
+
+    // الضغط على التصنيف يفتح المتجر مفلتراً بمنتجات هذا التصنيف فقط
+    const handleClick = () => {
+        if (!id) return;
+        localStorage.setItem('catChecked', JSON.stringify([id]));
+        localStorage.setItem('searchWord', '');
+        notifyFiltersChanged();
+        navigate('/products');
+    };
 
     return (
         <Col
@@ -16,7 +30,10 @@ const CategoryCard = ({ background, img, title }) => {
             md="4"
             lg="2"
             className="my-4 d-flex justify-content-around ">
-            <div className="allCard mb-3 ">
+            <div
+                className="allCard mb-3"
+                onClick={handleClick}
+                style={{ cursor: id ? 'pointer' : 'default' }}>
                 <div
                     className="categoty-card "
                     style={{ backgroundColor: `${background}` }}></div>{" "}

@@ -1,13 +1,15 @@
 import React from 'react'
 import UnopDropdown from "unop-react-dropdown";
 import sort from '../../images/sort.png'
-const SearchCountResult = ({ title ,onClick}) => {
+import { notifyFiltersChanged } from '../../hook/products/view-search-products-hook';
+const SearchCountResult = ({ title, onClick }) => {
     const handler = () => {
 
     }
     const clickMe = (key) => {
         localStorage.setItem("sortType", key)
-        onClick();
+        notifyFiltersChanged();
+        if (onClick) onClick();
     }
     return (
         <div className="d-flex justify-content-between pt-3 px-2">

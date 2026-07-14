@@ -1,29 +1,58 @@
-import React, { useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';  ← علق هذا السطر
-// import { createOrder } from '../../redux/actions/orderAction';  ← علق هذا السطر
-import { Button, Form } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Form, Container } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import { clearCart, getCartItems } from '../../redux/actions/cartAction';
+import { createOrder } from '../../utils/ordersStore';
+import { isNormalUser } from '../../utils/currentUser';
+import notify from '../../hook/useNotifaction';
 
 const ChoosePayMethoud = () => {
-    // const dispatch = useDispatch();  ← علق هذا السطر
-    // const cart = useSelector(state => state.cart.cartItems);  ← علق هذا السطر
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [address, setAddress] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('cash');
+    const cartItems = useSelector(state => state.cart?.cartItems || []);
+
+    useEffect(() => {
+        dispatch(getCartItems());
+    }, [dispatch]);
+
+    const totalPrice = cartItems.reduce(
+        (sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0
+    );
 
     const handleCheckout = () => {
-        // const products = cart.map(item => ({ product: item._id, quantity: item.quantity }));
-        // dispatch(createOrder({ products, totalPrice: cart.reduce((sum, i) => sum + i.price * i.quantity, 0), address, paymentMethod }));
-        alert('تم إتمام الطلب بنجاح! (تجريبي)');
+        if (cartItems.length === 0) {
+            notify('سلة التسوق فارغة، أضف منتجات أولاً', 'error');
+            return;
+        }
+        const order = createOrder({ cartItems, paymentMethodType: paymentMethod, address });
+        dispatch(clearCart());
+        notify(`تم إتمام الطلب بنجاح! رقم طلبك #${order.orderNumber}`, 'success');
+        setTimeout(() => {
+            navigate('/user/allorders');
+        }, 1500);
     };
 
     return (
-        <div>
+        <Container style={{ minHeight: '670px' }} className="py-4">
             <h4>اختر طريقة الدفع</h4>
+            <div className="product-price d-inline-block px-3 py-2 my-3 border">
+                الإجمالي: {totalPrice} ليرة سورية ({cartItems.length} منتج)
+            </div>
             <Form>
-                <Form.Group>
-                    <Form.Label>العنوان</Form.Label>
-                    <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} />
-                </Form.Group>
-                <Form.Group>
+                {
+                    // حقل العنوان مخفي تماماً عن المستخدم العادي
+                    !isNormalUser() && (
+                        <Form.Group>
+                            <Form.Label>العنوان</Form.Label>
+                            <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} />
+                        </Form.Group>
+                    )
+                }
+                <Form.Group className="my-3">
                     <Form.Label>طريقة الدفع</Form.Label>
                     <Form.Select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
                         <option value="cash">الدفع عند الاستلام</option>
@@ -32,7 +61,8 @@ const ChoosePayMethoud = () => {
                 </Form.Group>
                 <Button variant="success" onClick={handleCheckout}>إتمام الشراء</Button>
             </Form>
-        </div>
+            <ToastContainer />
+        </Container>
     );
 };
 

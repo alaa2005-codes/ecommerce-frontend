@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Col, Card, Row, Modal, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import prod1 from '../../images/prod1.png'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { deleteProducts } from '../../redux/actions/productsAction';
+import fixImageUrl from '../../utils/imageUrl';
 const AdminAllProductsCard = ({ item }) => {
     if (!item) {
         return null;
@@ -58,7 +59,7 @@ const AdminAllProductsCard = ({ item }) => {
                     </Col>
                 </Row>
                 <Link to={`/products/${item._id}`} style={{ textDecoration: "none" }}>
-                    <Card.Img style={{ height: "228px", width: "100%" }} src={item.imageCover || '/images/mobile.png'} onError={(e) => { e.target.src = '/images/mobile.png' }} />
+                    <Card.Img style={{ height: "228px", width: "100%", objectFit: "cover" }} src={fixImageUrl(item.imageCover, '/images/mobile.png')} onError={(e) => { e.target.src = '/images/mobile.png' }} />
                     <Card.Body>
                         <Card.Title>
                             <div className="card-title">

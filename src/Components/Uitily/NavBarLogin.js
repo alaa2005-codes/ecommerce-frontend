@@ -60,7 +60,10 @@ const NavBarLogin = () => {
                                         <NavDropdown.Item as={Link} to="/user/profile">الصفحة الشخصية</NavDropdown.Item>
                                     </>
                                 ) : (
-                                    <NavDropdown.Item as={Link} to="/user/profile">الصفحة الشخصية</NavDropdown.Item>
+                                    <>
+                                        <NavDropdown.Item as={Link} to="/user/profile">الصفحة الشخصية</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/user/allorders">طلباتي</NavDropdown.Item>
+                                    </>
                                 )}
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item onClick={logOut} as={Link} to="/">تسجيل خروج</NavDropdown.Item>
@@ -73,7 +76,7 @@ const NavBarLogin = () => {
                             </Nav.Link>
                         )}
 
-                        {isAuthenticated && (
+                        {isAuthenticated && !isAdminArea && (
                             <Nav.Link as={Link} to='/cart'
                                 className="nav-text d-flex mt-3 justify-content-center"
                                 style={{ color: "white" }}>

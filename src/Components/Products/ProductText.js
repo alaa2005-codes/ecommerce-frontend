@@ -1,13 +1,22 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import ViewProductsDetalisHook from './../../hook/products/view-products-detalis-hook';
-import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from '../../redux/actions/cartAction';
+import { isNormalUser } from '../../utils/currentUser';
+import notify from '../../hook/useNotifaction';
 
 const ProductText = () => {
   const { id } = useParams();
-  const [item, images, cat, brand] = ViewProductsDetalisHook(id);
- 
+  const [item, images, cat, brand, , , , subCategories] = ViewProductsDetalisHook(id);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    if (!item || !item._id) return;
+    dispatch(addToCart(item, 1));
+    notify("تمت إضافة المنتج إلى السلة بنجاح", "success");
+  };
 
   return (
     <div>
@@ -28,6 +37,18 @@ const ProductText = () => {
           <div className="barnd-text d-inline mx-1">{brand.name} </div>
         </Col>
       </Row>
+      {
+        subCategories && subCategories.length > 0 ? (
+          <Row>
+            <Col md="8" className="mt-2">
+              <div className="cat-text d-inline">التصنيف الفرعي :</div>
+              <div className="barnd-text d-inline mx-1">
+                {subCategories.map(s => s.name).join('، ')}
+              </div>
+            </Col>
+          </Row>
+        ) : null
+      }
       <Row>
         <Col md="8" className="mt-1 d-flex">
           {
@@ -56,7 +77,16 @@ const ProductText = () => {
       <Row className="mt-4">
         <Col md="12">
           <div className="product-price d-inline px-3 py-3 border">{item.price} ليرة سورية</div>
-          <div className="product-cart-add px-3 py-3 d-inline mx-3">اضف للسلة</div>
+          {
+            // زر الإضافة للسلة يظهر للمستخدم العادي فقط (مخفي عن الأدمن والمدير)
+            // وبعد اكتمال تحميل بيانات المنتج حتى لا تكون الإضافة فارغة
+            isNormalUser() && item._id ? (
+              <div
+                onClick={handleAddToCart}
+                style={{ cursor: 'pointer' }}
+                className="product-cart-add px-3 py-3 d-inline mx-3">اضف للسلة</div>
+            ) : null
+          }
         </Col>
       </Row>
     </div>

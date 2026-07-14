@@ -1,111 +1,83 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllCategory } from '../../redux/actions/categoryAction';
 import { getAllBrand } from './../../redux/actions/brandAction';
-import ViewSearchProductsHook from './../products/view-search-products-hook';
+import { notifyFiltersChanged } from './../products/view-search-products-hook';
+
+const safeParseArray = (key) => {
+    try {
+        const value = JSON.parse(localStorage.getItem(key) || '[]');
+        return Array.isArray(value) ? value : [];
+    } catch (e) {
+        return [];
+    }
+};
 
 const SidebarSearchHook = () => {
-    const [items, pagination, onPress, getProduct, results] = ViewSearchProductsHook();
     const dispatch = useDispatch();
-    //when first load
-    useEffect(() => {
-        const get = async () => {
-            await dispatch(getAllCategory(50));
-            await dispatch(getAllBrand(50));
-        }
-        get();
-    }, [])
 
-    //to get state from redux
+    // جلب التصنيفات والماركات عند أول تحميل
+    useEffect(() => {
+        dispatch(getAllCategory(50));
+        dispatch(getAllBrand(50));
+    }, [dispatch])
+
     const allCat = useSelector(state => state.allCategory.category)
-    //to get state from redux
     const allBrand = useSelector(state => state.allBrand.brand)
 
-    //to get category
-    let category = [];
-    if (allCat.data)
-        category = allCat.data
+    const category = allCat?.data || [];
+    const brand = allBrand?.data || [];
 
-    //to get category
-    let brand = [];
-    if (allBrand.data)
-        brand = allBrand.data
-    var queryCat = "", queryBrand = "";
-    const [catChecked, setCatChecked] = useState([])
-    //when user press any category
+    const [catChecked, setCatChecked] = useState(() => safeParseArray('catChecked'))
+    const [brandChecked, setBrandChecked] = useState(() => safeParseArray('brandChecked'))
+    const [from, setFrom] = useState(localStorage.getItem('priceFrom') || '')
+    const [to, setTo] = useState(localStorage.getItem('priceTo') || '')
+
+    const saveAndNotify = (key, value) => {
+        localStorage.setItem(key, value)
+        notifyFiltersChanged()
+    }
+
+    // عند اختيار تصنيف
     const clickCategory = (e) => {
-        let value = e.target.value
-        if (value === "0") {
-            setCatChecked([])
+        const value = e.target.value
+        let newChecked;
+        if (value === '0') {
+            newChecked = []
+        } else if (e.target.checked) {
+            newChecked = [...catChecked, value]
+        } else {
+            newChecked = catChecked.filter(id => id !== value)
         }
-        else {
-            if (e.target.checked === true) {
-                setCatChecked([...catChecked, value])
-            } else if (e.target.checked === false) {
-                const newArry = catChecked.filter((e) => e !== value)
-                setCatChecked(newArry)
-            }
-        }
-
+        setCatChecked(newChecked)
+        saveAndNotify('catChecked', JSON.stringify(newChecked))
     }
-    useEffect(() => {
-        queryCat = catChecked.map(val => "category[in][]=" + val).join("&")
-        localStorage.setItem("catCecked", queryCat)
-        setTimeout(() => {
-            getProduct();
-        }, 1000);
-    }, [catChecked])
 
-
-    const [brandChecked, setBrandChecked] = useState([])
-    //when user press any category
+    // عند اختيار ماركة
     const clickBrand = (e) => {
-        let value = e.target.value
-        if (value === "0") {
-            setBrandChecked([])
+        const value = e.target.value
+        let newChecked;
+        if (value === '0') {
+            newChecked = []
+        } else if (e.target.checked) {
+            newChecked = [...brandChecked, value]
+        } else {
+            newChecked = brandChecked.filter(id => id !== value)
         }
-        else {
-            if (e.target.checked === true) {
-                setBrandChecked([...brandChecked, value])
-            } else if (e.target.checked === false) {
-                const newArry = brandChecked.filter((e) => e !== value)
-                setBrandChecked(newArry)
-            }
-        }
+        setBrandChecked(newChecked)
+        saveAndNotify('brandChecked', JSON.stringify(newChecked))
     }
-
-    useEffect(() => {
-        queryBrand = brandChecked.map(val => "brand[in][]=" + val).join("&")
-        localStorage.setItem("brandCecked", queryBrand)
-        setTimeout(() => {
-            getProduct();
-        }, 1000);
-    }, [brandChecked])
-
-    const [From, setPriceFrom] = useState(0)
-    const [To, setToFrom] = useState(0)
 
     const priceFrom = (e) => {
-        localStorage.setItem("priceFrom", e.target.value)
-
-        setPriceFrom(e.target.value)
+        setFrom(e.target.value)
+        saveAndNotify('priceFrom', e.target.value)
     }
     const priceTo = (e) => {
-        localStorage.setItem("priceTo", e.target.value)
-        setToFrom(e.target.value)
+        setTo(e.target.value)
+        saveAndNotify('priceTo', e.target.value)
     }
 
-    useEffect(() => {
-        setTimeout(() => {
-            getProduct();
-        }, 1000);
-    }, [From, To])
-
-
-
-
-    return [category, brand, clickCategory, clickBrand, priceFrom, priceTo]
-
+    return [category, brand, clickCategory, clickBrand, priceFrom, priceTo, catChecked, brandChecked, from, to]
 }
 
 export default SidebarSearchHook

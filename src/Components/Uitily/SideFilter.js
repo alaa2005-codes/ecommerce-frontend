@@ -3,23 +3,33 @@ import { Row } from 'react-bootstrap'
 import SidebarSearchHook from '../../hook/search/sidebar-search-hook';
 
 const SideFilter = () => {
-  const [category, brand, clickCategory, clickBrand, priceFrom, priceTo] = SidebarSearchHook();
-  let localFrom = localStorage.getItem("priceFrom")
-  let localTo = localStorage.getItem("priceTo")
+  const [category, brand, clickCategory, clickBrand, priceFrom, priceTo, catChecked, brandChecked, from, to] = SidebarSearchHook();
+
   return (
     <div className="mt-3">
       <Row>
         <div className="d-flex flex-column mt-2">
           <div className="filter-title">الفئة</div>
           <div className="d-flex mt-3">
-            <input onChange={clickCategory} type="checkbox" value="0" />
+            <input
+              onChange={clickCategory}
+              type="checkbox"
+              value="0"
+              checked={catChecked.length === 0}
+              readOnly={catChecked.length === 0}
+            />
             <div className="filter-sub me-2 ">الكل</div>
           </div>
           {
-            category ? (category.map((item, index) => {
+            category.length > 0 ? (category.map((item) => {
               return (
-                <div key={index} className="d-flex mt-3">
-                  <input onChange={clickCategory} type="checkbox" value={item._id} />
+                <div key={item._id} className="d-flex mt-3">
+                  <input
+                    onChange={clickCategory}
+                    type="checkbox"
+                    value={item._id}
+                    checked={catChecked.includes(item._id)}
+                  />
                   <div className="filter-sub me-2 ">{item.name}</div>
                 </div>
               )
@@ -30,15 +40,26 @@ const SideFilter = () => {
         <div className="d-flex flex-column mt-2">
           <div className="filter-title mt-3">الماركة</div>
           <div className="d-flex mt-3">
-            <input onChange={clickBrand} type="checkbox" value="0" />
+            <input
+              onChange={clickBrand}
+              type="checkbox"
+              value="0"
+              checked={brandChecked.length === 0}
+              readOnly={brandChecked.length === 0}
+            />
             <div className="filter-sub me-2 ">الكل</div>
           </div>
 
           {
-            brand ? (brand.map((item, index) => {
+            brand.length > 0 ? (brand.map((item) => {
               return (
-                <div key={index} className="d-flex mt-3">
-                  <input onChange={clickBrand} type="checkbox" value={item._id} />
+                <div key={item._id} className="d-flex mt-3">
+                  <input
+                    onChange={clickBrand}
+                    type="checkbox"
+                    value={item._id}
+                    checked={brandChecked.includes(item._id)}
+                  />
                   <div className="filter-sub me-2 ">{item.name}</div>
                 </div>
               )
@@ -50,21 +71,23 @@ const SideFilter = () => {
         <div className="d-flex">
           <p className="filter-sub my-2">من:</p>
           <input
-            value={localFrom}
+            value={from}
             onChange={priceFrom}
             className="m-2 text-center"
             type="number"
-            style={{ width: "50px", height: "25px" }}
+            min="0"
+            style={{ width: "70px", height: "25px" }}
           />
         </div>
         <div className="d-flex">
           <p className="filter-sub my-2">الي:</p>
           <input
+            value={to}
             onChange={priceTo}
-            value={localTo}
             className="m-2 text-center"
             type="number"
-            style={{ width: "50px", height: "25px" }}
+            min="0"
+            style={{ width: "70px", height: "25px" }}
           />
         </div>
       </Row >

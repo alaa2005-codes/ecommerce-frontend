@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { ToastContainer } from 'react-toastify'
 import CartCheckout from '../../Components/Cart/CartCheckout'
 import CartItem from '../../Components/Cart/CartItem'
+import ActiveCoupons from '../../Components/Cart/ActiveCoupons'
 import { getCartItems } from '../../redux/actions/cartAction'
 
 const CartPage = () => {
@@ -27,11 +29,13 @@ const CartPage = () => {
                     ) : (
                         <div className="text-center py-5">سلة التسوق فارغة</div>
                     )}
+                    <ActiveCoupons />
                 </Col>
-                <Col xs="6" md="3">
-                    <CartCheckout />
+                <Col xs="12" md="3">
+                    <CartCheckout cartItems={cartItems} />
                 </Col>
             </Row>
+            <ToastContainer />
         </Container>
     )
 }
